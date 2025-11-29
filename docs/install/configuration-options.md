@@ -309,7 +309,7 @@ The routes (url rules) of the module for the URL management. The default values 
 
 Configures the root directory of the view files. See [overriding views](../customizing/overriding-views.md).
 
-**Note**: This option is deprecated. Use `uiFramework` or `customViewPath` instead for better framework support.
+**Note**: This option is deprecated. Use `uiFramework` or `customViewPath` instead for better framework support. The module now sets the `viewPath` internally based on the `uiFramework` or `customViewPath` configuration. If you're using the `theme.pathMap` approach to override views, update your paths to reference the framework-specific directory (e.g., `@Da/User/resources/views/bootstrap5` instead of `@Da/User/resources/views`).
 
 #### uiFramework (type: `string`, default: `'bootstrap5'`)
 
