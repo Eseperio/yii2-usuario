@@ -95,7 +95,7 @@ $module = Yii::$app->getModule('user');
                     </div>
                 </div>
             </div>
-            <div class="panel panel-info">
+            <div class="user-panel user-panel-info">
                 <div class="user-panel-heading">
                     <h3 class="user-panel-title"><?= Yii::t('usuario', 'Two Factor Authentication (2FA)') ?></h3>
                 </div>
@@ -171,7 +171,7 @@ $module = Yii::$app->getModule('user');
             </div>
         <?php endif; ?>
         <?php if ($model->module->allowAccountDelete): ?>
-            <div class="panel panel-danger">
+            <div class="user-panel user-panel-danger">
                 <div class="user-panel-heading">
                     <h3 class="user-panel-title"><?= Yii::t('usuario', 'Delete account') ?></h3>
                 </div>

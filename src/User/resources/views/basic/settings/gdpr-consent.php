@@ -6,7 +6,7 @@ use yii\widgets\ActiveForm;
 ?>
 
 <div class="user-container">
-    <div class="col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
+    <div class="user-content">
         <?php $form = ActiveForm::begin(
             [
                 'id' => $model->formName(),

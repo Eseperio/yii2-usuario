@@ -35,9 +35,9 @@
 </div>
 <div class="user-container">
     <div class="col-md-offset-3 col-md-6 text-center">
-        <div class="input-group">
-            <input type="text" class="form-control" id="tfcode" placeholder="<?= Yii::t('usuario', 'Two factor authentication code') ?>"/>
-            <span class="input-group-btn">
+        <div class="user-input-group">
+            <input type="text" class="user-input" id="tfcode" placeholder="<?= Yii::t('usuario', 'Two factor authentication code') ?>"/>
+            <span class="user-input-btn">
                 <button type="button" class="submit-code">
                     <?= Yii::t('usuario', 'Enable') ?>
                 </button>

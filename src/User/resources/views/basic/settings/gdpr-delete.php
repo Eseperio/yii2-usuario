@@ -15,8 +15,8 @@ use yii\helpers\Html;
 ?>
 
 <div class="user-container">
-    <div class="col-md-6 col-md-offset-3">
-        <div class="panel panel-danger">
+    <div class="user-content">
+        <div class="user-panel user-panel-danger">
             <div class="user-panel-heading">
                 <h3 class="user-panel-title">
                     <?= Yii::t('usuario', 'Delete personal data') ?>
@@ -35,7 +35,7 @@ use yii\helpers\Html;
                 $form = ActiveForm::begin([])
                 ?>
                 <div class="user-container">
-                    <div class="col-md-6 col-md-offset-3">
+                    <div class="user-content">
                         <?= $form->field($model, 'password')->passwordInput() ?>
                     </div>
                 </div>

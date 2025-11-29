@@ -25,9 +25,9 @@
 
     <div class="user-container">
         <div class="col-md-offset-3 col-md-6 text-center">
-            <div class="input-group">
-                <input type="text" class="form-control" id="mobilephone" value="<?= $mobilePhone ?>" placeholder="<?= Yii::t('usuario', 'Mobile phone number') ?>"/>
-                <span class="input-group-btn">
+            <div class="user-input-group">
+                <input type="text" class="user-input" id="mobilephone" value="<?= $mobilePhone ?>" placeholder="<?= Yii::t('usuario', 'Mobile phone number') ?>"/>
+                <span class="user-input-btn">
                     <button type="button" class="submit-mobile-phone">
                         <?= Yii::t('usuario', 'Insert') ?>
                     </button>
@@ -55,9 +55,9 @@
     </div>
     <div class="user-container">
         <div class="col-md-offset-3 col-md-6 text-center">
-            <div class="input-group">
-                <input type="text" class="form-control" id="tfcode" placeholder="<?= Yii::t('usuario', 'Two factor authentication code by SMS') ?>"/>
-                <span class="input-group-btn">
+            <div class="user-input-group">
+                <input type="text" class="user-input" id="tfcode" placeholder="<?= Yii::t('usuario', 'Two factor authentication code by SMS') ?>"/>
+                <span class="user-input-btn">
                     <button type="button" class="submit-code">
                         <?= Yii::t('usuario', 'Enable') ?>
                     </button>
