@@ -309,6 +309,48 @@ The routes (url rules) of the module for the URL management. The default values 
 
 Configures the root directory of the view files. See [overriding views](../customizing/overriding-views.md).
 
+**Note**: This option is deprecated. Use `uiFramework` or `customViewPath` instead for better framework support.
+
+#### uiFramework (type: `string`, default: `'bootstrap5'`)
+
+Configures which CSS framework's views to use. The module supports multiple UI frameworks with different view directories for each. This allows switching between CSS frameworks by simply changing this configuration option.
+
+Available values:
+- `Module::UI_BOOTSTRAP5` (or `'bootstrap5'`): Uses Bootstrap 5 views (default)
+- `Module::UI_BOOTSTRAP3` (or `'bootstrap3'`): Uses Bootstrap 3 views
+
+Example configuration:
+
+```php
+'modules' => [
+    'user' => [
+        'class' => Da\User\Module::class,
+        'uiFramework' => Da\User\Module::UI_BOOTSTRAP3, // Use Bootstrap 3 views
+    ],
+],
+```
+
+The corresponding composer dependencies must be installed:
+- For Bootstrap 5: `yiisoft/yii2-bootstrap5` and `kartik-v/yii2-widget-select2`
+- For Bootstrap 3: `yiisoft/yii2-bootstrap`
+
+#### customViewPath (type: `string|null`, default: `null`)
+
+Allows complete customization of the views directory. If set, this overrides the `uiFramework` setting.
+
+This is useful when you want to use your own custom views instead of the built-in framework-specific views.
+
+Example configuration:
+
+```php
+'modules' => [
+    'user' => [
+        'class' => Da\User\Module::class,
+        'customViewPath' => '@app/views/user', // Use custom views from your application
+    ],
+],
+```
+
 #### switchIdentitySessionKey (type: `string`, default: `yuik_usuario`)
 
 Configures the name of the session key that will be used to hold the original admin identifier.

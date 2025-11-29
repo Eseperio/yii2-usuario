@@ -231,9 +231,24 @@ class Module extends BaseModule
         'recover/<id:\d+>/<code:[A-Za-z0-9_-]+>' => 'recovery/reset'
     ];
     /**
-     * @var string
+     * UI Framework constants
      */
-    public $viewPath = '@Da/User/resources/views/bootstrap5';
+    public const UI_BOOTSTRAP3 = 'bootstrap3';
+    public const UI_BOOTSTRAP5 = 'bootstrap5';
+    /**
+     * @var string the UI framework to use for views (e.g., 'bootstrap3', 'bootstrap5').
+     *             This determines which view directory is used for rendering.
+     *             Supported values: Module::UI_BOOTSTRAP3, Module::UI_BOOTSTRAP5
+     *             In the future, other frameworks like 'tailwind' may be supported.
+     */
+    public $uiFramework = self::UI_BOOTSTRAP5;
+    /**
+     * @var string|null Custom view path. If set, this will override the $uiFramework setting.
+     *                  This allows for complete customization of the views directory.
+     *                  Note: This is different from yii\base\Module::$viewPath which is set
+     *                  automatically based on this property or $uiFramework.
+     */
+    public $customViewPath = null;
     /**
      * @var string the mail views path is UI framework independent
      */
@@ -320,6 +335,21 @@ class Module extends BaseModule
         );
 
         return $this->gdprConsentMessage ?: $defaultConsentMessage;
+    }
+
+    /**
+     * Returns the effective view path based on the uiFramework setting or custom view path.
+     * If customViewPath is explicitly set, it takes precedence over uiFramework.
+     *
+     * @return string the view path to use
+     */
+    public function getEffectiveViewPath()
+    {
+        if ($this->customViewPath !== null) {
+            return $this->customViewPath;
+        }
+
+        return '@Da/User/resources/views/' . $this->uiFramework;
     }
 
     /**
