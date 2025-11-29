@@ -408,13 +408,17 @@ class Bootstrap implements BootstrapInterface
                 'Assignment',
                 'Permission',
                 'Role',
-                'SessionHistory'
+                'SessionHistory',
+                'AbstractAuthItem',
+                'Rule',
             ],
             'Da\User\Search' => [
                 'UserSearch',
                 'PermissionSearch',
                 'RoleSearch',
                 'SessionHistorySearch',
+                'RuleSearch',
+                'AbstractAuthItemSearch',
             ],
             'Da\User\Form' => [
                 'RegistrationForm',
@@ -422,10 +426,37 @@ class Bootstrap implements BootstrapInterface
                 'LoginForm',
                 'SettingsForm',
                 'RecoveryForm',
+                'GdprDeleteForm',
             ],
             'Da\User\Service' => [
+                'AccountConfirmationService',
+                'AuthItemEditionService',
+                'AuthRuleEditionService',
+                'EmailChangeService',
                 'MailService',
+                'PasswordExpireService',
+                'PasswordRecoveryService',
+                'ResendConfirmationService',
+                'ResetPasswordService',
+                'SocialNetworkAccountConnectService',
+                'SocialNetworkAuthenticateService',
+                'SwitchIdentityService',
+                'TwoFactorEmailCodeGeneratorService',
+                'TwoFactorQrCodeUriGeneratorService',
+                'TwoFactorSmsCodeGeneratorService',
+                'UpdateAuthAssignmentsService',
+                'UserBlockService',
+                'UserConfirmationService',
+                'UserCreateService',
+                'UserRegisterService',
             ],
+            'Da\User\Helper' => [
+                'AuthHelper',
+                'ClassMapHelper',
+                'MigrationHelper',
+                'SecurityHelper',
+                'TimezoneHelper',
+            ]
         ];
 
         $mapping = array_merge($defaults, $userClassMap);
