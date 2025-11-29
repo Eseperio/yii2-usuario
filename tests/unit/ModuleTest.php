@@ -8,14 +8,25 @@ use Da\User\Module;
 class ModuleTest extends \Codeception\Test\Unit
 {
     /**
-     * Test getEffectiveViewPath with default uiFramework (bootstrap5)
+     * Test getEffectiveViewPath with default uiFramework (basic)
      */
     public function testDefaultUiFramework()
     {
         $module = new Module('user');
         
-        $this->assertEquals(Module::UI_BOOTSTRAP5, $module->uiFramework);
+        $this->assertEquals(Module::UI_BASIC, $module->uiFramework);
         $this->assertNull($module->customViewPath);
+        $this->assertEquals('@Da/User/resources/views/basic', $module->getEffectiveViewPath());
+    }
+
+    /**
+     * Test getEffectiveViewPath with bootstrap5 uiFramework
+     */
+    public function testBootstrap5UiFramework()
+    {
+        $module = new Module('user');
+        $module->uiFramework = Module::UI_BOOTSTRAP5;
+        
         $this->assertEquals('@Da/User/resources/views/bootstrap5', $module->getEffectiveViewPath());
     }
 
@@ -61,6 +72,7 @@ class ModuleTest extends \Codeception\Test\Unit
      */
     public function testUiFrameworkConstants()
     {
+        $this->assertEquals('basic', Module::UI_BASIC);
         $this->assertEquals('bootstrap3', Module::UI_BOOTSTRAP3);
         $this->assertEquals('bootstrap5', Module::UI_BOOTSTRAP5);
     }

@@ -311,12 +311,13 @@ Configures the root directory of the view files. See [overriding views](../custo
 
 **Note**: This option is deprecated. Use `uiFramework` or `customViewPath` instead for better framework support. The module now sets the `viewPath` internally based on the `uiFramework` or `customViewPath` configuration. If you're using the `theme.pathMap` approach to override views, update your paths to reference the framework-specific directory (e.g., `@Da/User/resources/views/bootstrap5` instead of `@Da/User/resources/views`).
 
-#### uiFramework (type: `string`, default: `'bootstrap5'`)
+#### uiFramework (type: `string`, default: `'basic'`)
 
 Configures which CSS framework's views to use. The module supports multiple UI frameworks with different view directories for each. This allows switching between CSS frameworks by simply changing this configuration option.
 
 Available values:
-- `Module::UI_BOOTSTRAP5` (or `'bootstrap5'`): Uses Bootstrap 5 views (default)
+- `Module::UI_BASIC` (or `'basic'`): Uses framework-independent views (default). No CSS framework dependencies required.
+- `Module::UI_BOOTSTRAP5` (or `'bootstrap5'`): Uses Bootstrap 5 views
 - `Module::UI_BOOTSTRAP3` (or `'bootstrap3'`): Uses Bootstrap 3 views
 
 Example configuration:
@@ -325,14 +326,15 @@ Example configuration:
 'modules' => [
     'user' => [
         'class' => Da\User\Module::class,
-        'uiFramework' => Da\User\Module::UI_BOOTSTRAP3, // Use Bootstrap 3 views
+        'uiFramework' => Da\User\Module::UI_BOOTSTRAP5, // Use Bootstrap 5 views
     ],
 ],
 ```
 
-The corresponding composer dependencies must be installed:
+The corresponding composer dependencies must be installed for Bootstrap versions:
 - For Bootstrap 5: `yiisoft/yii2-bootstrap5` and `kartik-v/yii2-widget-select2`
 - For Bootstrap 3: `yiisoft/yii2-bootstrap`
+- For Basic: No additional dependencies required
 
 #### customViewPath (type: `string|null`, default: `null`)
 

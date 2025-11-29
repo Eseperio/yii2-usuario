@@ -233,15 +233,17 @@ class Module extends BaseModule
     /**
      * UI Framework constants
      */
+    public const UI_BASIC = 'basic';
     public const UI_BOOTSTRAP3 = 'bootstrap3';
     public const UI_BOOTSTRAP5 = 'bootstrap5';
     /**
-     * @var string the UI framework to use for views (e.g., 'bootstrap3', 'bootstrap5').
+     * @var string the UI framework to use for views (e.g., 'basic', 'bootstrap3', 'bootstrap5').
      *             This determines which view directory is used for rendering.
-     *             Supported values: Module::UI_BOOTSTRAP3, Module::UI_BOOTSTRAP5
+     *             Supported values: Module::UI_BASIC, Module::UI_BOOTSTRAP3, Module::UI_BOOTSTRAP5
+     *             The 'basic' option provides framework-independent views.
      *             In the future, other frameworks like 'tailwind' may be supported.
      */
-    public $uiFramework = self::UI_BOOTSTRAP5;
+    public $uiFramework = self::UI_BASIC;
     /**
      * @var string|null Custom view path. If set, this will override the $uiFramework setting.
      *                  This allows for complete customization of the views directory.
