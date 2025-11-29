@@ -359,7 +359,9 @@ class Bootstrap implements BootstrapInterface
      */
     protected function initControllerNamespace(WebApplication $app)
     {
-        $app->getModule('user')->setViewPath($app->getModule('user')->viewPath);
+        /** @var Module $module */
+        $module = $app->getModule('user');
+        $module->setViewPath($module->getEffectiveViewPath());
     }
 
     /**

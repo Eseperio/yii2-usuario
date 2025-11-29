@@ -1,0 +1,68 @@
+<?php
+/*
+* This file is part of the 2amigos/yii2-usuario-app project.
+*
+* (c) 2amigOS! <http://2amigos.us/>
+*
+* For the full copyright and license information, please view
+* the LICENSE file that was distributed with this source code.
+*/
+
+/** @var string $id */
+/** @var string $uri */
+/** @var string $mobilePhone */
+?>
+
+<div id="phonenumbersection">
+    <div class="user-alert user-alert-info" id="tfmessagephone">
+        <p>
+            <?= Yii::t(
+                'usuario',
+                'Insert the mobile phone number where you want to receive text message in international format'
+            ) ?>
+        </p>
+    </div>
+
+    <div class="user-container">
+        <div class="col-md-offset-3 col-md-6 text-center">
+            <div class="user-input-group">
+                <input type="text" class="user-input" id="mobilephone" value="<?= $mobilePhone ?>" placeholder="<?= Yii::t('usuario', 'Mobile phone number') ?>"/>
+                <span class="user-input-btn">
+                    <button type="button" class="submit-mobile-phone">
+                        <?= Yii::t('usuario', 'Insert') ?>
+                    </button>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="smssection" class="hide">
+    <hr>
+    <div class="user-alert user-alert-info" id="tfmessage">
+        <p>
+            <?= Yii::t(
+                'usuario',
+                'Insert the code you received by SMS.'
+            ) ?>
+        </p>
+    </div>
+
+    <div class="user-container">
+        <div class="col-md-offset-3 col-md-6 text-center">
+            <div></div>
+        </div>
+    </div>
+    <div class="user-container">
+        <div class="col-md-offset-3 col-md-6 text-center">
+            <div class="user-input-group">
+                <input type="text" class="user-input" id="tfcode" placeholder="<?= Yii::t('usuario', 'Two factor authentication code by SMS') ?>"/>
+                <span class="user-input-btn">
+                    <button type="button" class="submit-code">
+                        <?= Yii::t('usuario', 'Enable') ?>
+                    </button>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
