@@ -371,10 +371,12 @@ class AdminController extends ActiveController
         }
 
         // Execute switch identity service
+        // Note: Using array key '2' to pass $userId as 3rd constructor parameter
+        // while letting DI container inject UserQuery as 2nd parameter
         if ($this->make(SwitchIdentityService::class, [$this, 2 => $id])->run()) {
             // Get current user after switch
             $currentUser = Yii::$app->user->identity;
-            
+
             return [
                 'success' => true,
                 'message' => Yii::t('usuario', 'Identity switched successfully.'),
