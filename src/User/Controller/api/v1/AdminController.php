@@ -19,6 +19,8 @@ use Da\User\Model\User;
 use Da\User\Query\UserQuery;
 use Da\User\Service\PasswordExpireService;
 use Da\User\Service\PasswordRecoveryService;
+use Da\User\Service\SwitchIdentityService;
+use Da\User\Service\UpdateAuthAssignmentsService;
 use Da\User\Service\UserBlockService;
 use Da\User\Service\UserConfirmationService;
 use Da\User\Service\UserCreateService;
@@ -37,10 +39,6 @@ use yii\web\ServerErrorHttpException;
 /**
  * Controller that provides REST APIs to manage users.
  * This controller is equivalent to `Da\User\Controller\AdminController`.
- *
- * TODO:
- * - `Info` and `SwitchIdentity` actions were not developed yet.
- * - `Assignments` action implements only GET method (POST method not developed yet).
  */
 class AdminController extends ActiveController
 {
@@ -290,6 +288,8 @@ class AdminController extends ActiveController
 
     /**
      * Get assignments of the specified user.
+     * GET method returns current assignments.
+     * POST/PUT/PATCH methods update user assignments.
      * @param int $id ID of the user.
      */
     public function actionAssignments($id)
@@ -304,9 +304,87 @@ class AdminController extends ActiveController
             $this->throwUser404();
         }
 
-        // Get assignments + response
+        // Create assignments model
+        /** @var Assignment $assignments */
         $assignments = $this->make(Assignment::class, [], ['user_id' => $user->id]);
+
+        // Handle GET request - return current assignments
+        if (Yii::$app->request->isGet) {
+            return $assignments;
+        }
+
+        // Handle POST/PUT/PATCH - update assignments
+        $assignments->load(Yii::$app->getRequest()->getBodyParams(), '');
+        if ($assignments->validate()) {
+            if ($this->make(UpdateAuthAssignmentsService::class, [$assignments])->run()) {
+                return $assignments;
+            }
+        }
+
+        if (!$assignments->hasErrors()) {
+            $this->throwServerError();
+        }
         return $assignments;
+    }
+
+    /**
+     * Get detailed information of the specified user.
+     * Returns user data along with profile information.
+     * @param int $id ID of the user.
+     */
+    public function actionInfo($id)
+    {
+        // Check access
+        $this->checkAccess($this->action);
+
+        // Get user model
+        /** @var ?User $user */
+        $user = $this->userQuery->whereIdOrUsernameOrEmail($id)->one();
+        if (is_null($user)) { // Check user, so `$id` parameter
+            $this->throwUser404();
+        }
+
+        // Return user with profile data
+        return [
+            'user' => $user,
+            'profile' => $user->profile,
+        ];
+    }
+
+    /**
+     * Switch identity to another user or back to original user.
+     * POST with user ID to switch to that user.
+     * POST without ID to switch back to original user.
+     * @param int|null $id ID of the user to switch to (null to switch back).
+     */
+    public function actionSwitchIdentity($id = null)
+    {
+        // Check access
+        $this->checkAccess($this->action);
+
+        /** @var \Da\User\Module $module */
+        $module = $this->module;
+
+        // Check if switch identities feature is enabled
+        if (false === $module->enableSwitchIdentities) {
+            throw new ForbiddenHttpException(Yii::t('usuario', 'Switch identities is disabled.'));
+        }
+
+        // Execute switch identity service
+        // Note: Using array key '2' to pass $userId as 3rd constructor parameter
+        // while letting DI container inject UserQuery as 2nd parameter
+        if ($this->make(SwitchIdentityService::class, [$this, 2 => $id])->run()) {
+            // Get current user after switch
+            $currentUser = Yii::$app->user->identity;
+
+            return [
+                'success' => true,
+                'message' => Yii::t('usuario', 'Identity switched successfully.'),
+                'current_user_id' => $currentUser ? $currentUser->id : null,
+            ];
+        }
+
+        $this->throwServerError();
     }
 
     /**
@@ -431,7 +509,9 @@ class AdminController extends ActiveController
 
         // Add new verbs and return
         $verbs['update-profile'] = ['PUT', 'PATCH'];
-        $verbs['assignments'] = ['GET'];
+        $verbs['assignments'] = ['GET', 'POST', 'PUT', 'PATCH'];
+        $verbs['info'] = ['GET'];
+        $verbs['switch-identity'] = ['POST'];
         $verbs['confirm'] = ['PUT', 'PATCH'];
         $verbs['block'] = ['PUT', 'PATCH'];
         $verbs['password-reset'] = ['PUT', 'PATCH'];
