@@ -27,21 +27,120 @@ module is built to work out of the box with some minor config tweaks and it come
 We considered that RBAC was essential to be included into any user management module, even if you simply use one user 
 with `admin` role, its much better to actually work with RBAC just in case your application scales in the future.
 
-## Boostrap 4 and 5 support
+## UI Framework Support
 
-With the release of 1.6, contributors started implementing changes for supporting newer versions of the Boostrap library,
-being Usuario stuck at 3.
+Usuario is UI framework agnostic and includes default views for:
+- Bootstrap 3
+- Bootstrap 4
+- Bootstrap 5
+- Tailwind CSS
+- Basic (no framework)
 
-Up until around May 2023, the `master` branch will remain stable, so devs who in these years relied on it for
-deployment can have time to migrate to a stable version.
-BS5 development is ongoing on branch [`2.0.0-dev`](https://github.com/2amigos/yii2-usuario/tree/v2.0.0-dev),
-which will eventually be merged in `master` around May.
-
-You can check issues #476, #488, #500 for updates, or the [branch itself](https://github.com/2amigos/yii2-usuario/tree/v2.0.0-dev).
+You can configure your preferred UI framework in the module configuration using the `uiFramework` option.
 
 ## Documentation
 
-You can read the latest docs on [http://yii2-usuario.readthedocs.io/en/latest/](http://yii2-usuario.readthedocs.io/en/latest/)
+For comprehensive documentation, see [docs/readme.md](docs/readme.md).
+
+## Quick Start
+
+### Installation
+
+```bash
+composer require 2amigos/yii2-usuario
+```
+
+### Configuration
+
+Add the module to your application configuration:
+
+```php
+'modules' => [
+    'user' => [
+        'class' => Da\User\Module::class,
+        'administrators' => ['admin'], // required for accessing administrative actions
+        'uiFramework' => 'bootstrap5', // Options: bootstrap3, bootstrap4, bootstrap5, tailwind, basic
+    ]
+]
+```
+
+### Database Setup
+
+Run migrations:
+
+```bash
+./yii migrate --migrationNamespaces=Da\\User\\Migration
+./yii migrate --migrationPath=@yii/rbac/migrations
+```
+
+### Usage Examples
+
+#### Checking User Permissions
+
+```php
+// Check if user has permission
+if (Yii::$app->user->can('createPost')) {
+    // User can create posts
+}
+
+// Check in views
+<?php if (Yii::$app->user->can('admin')): ?>
+    <!-- Admin only content -->
+<?php endif; ?>
+```
+
+#### Managing Users Programmatically
+
+```php
+// Get user service
+$userService = Yii::$container->get(Da\User\Service\UserCreateService::class);
+
+// Create a new user
+$user = $userService->create([
+    'email' => 'user@example.com',
+    'username' => 'newuser',
+    'password' => 'securepassword',
+]);
+
+// Assign role to user
+$auth = Yii::$app->authManager;
+$role = $auth->getRole('editor');
+$auth->assign($role, $user->id);
+```
+
+#### Accessing User Information
+
+```php
+// Get current user
+$user = Yii::$app->user->identity;
+
+// Access user profile
+$profile = $user->profile;
+echo $profile->name;
+echo $profile->gravatar_email;
+
+// Check if user is confirmed
+if ($user->isConfirmed) {
+    // User has confirmed their email
+}
+```
+
+#### Using Events
+
+```php
+// In your configuration file
+use Da\User\Event\FormEvent;
+use Da\User\Event\UserEvent;
+
+Yii::$app->on(
+    UserEvent::EVENT_AFTER_REGISTER,
+    function (UserEvent $event) {
+        // Send welcome email or perform other actions
+        $user = $event->user;
+        // Your custom logic here
+    }
+);
+```
 
 ## Need Help? 
 
