@@ -9,7 +9,6 @@
  * the LICENSE file that was distributed with this source code.
  */
 
-use dosamigos\selectize\SelectizeDropDownList;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
@@ -35,16 +34,7 @@ use yii\widgets\ActiveForm;
 
 <?= Html::activeHiddenInput($model, 'user_id') ?>
 
-<?= $form->field($model, 'items')->widget(
-    SelectizeDropDownList::class,
-    [
-        'items' => $availableItems,
-        'options' => [
-            'id' => 'children',
-            'multiple' => true,
-        ],
-    ]
-) ?>
+<?= $form->field($model, 'items')->checkboxList($availableItems, ['id' => 'children']) ?>
 
 <?= Html::submitButton(Yii::t('usuario', 'Update assignments'), []) ?>
 
